@@ -17,8 +17,9 @@ void setup() {
   pinMode(7, INPUT); //declare the sound sensor pin to INPUT
 
   //set the initial positions of the servos
+  off.write(0);
+  delay(5) ;
   on.write(180);
-  off.write(0); 
 }
 
 void loop() {
@@ -29,13 +30,15 @@ void loop() {
       
       Serial.println("off"); //print "off" the the serial monitor
       on.write(180);
+      //move servos
       delay(5);
       off.write(30);
       delay(2000);
+
       light_switch ++; //change status to "off"
       
     }else if(light_switch==1){ // ... and if the light is off...
-       Serial.println("on");
+       Serial.println("on"); //print "on" the the serial monitor
        off.write(0);
        delay(5);
        on.write(150);
