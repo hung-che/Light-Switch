@@ -10,6 +10,10 @@ Servo off;
 
 int light_switch = 0; //light status: 0 = on, 1 = off
 
+unsigned long startMillis;  //some global variables available anywhere in the program
+unsigned long currentMillis;
+const unsigned long period = 1000;  //specify the time after which you want the light to switch off (in millisecond)
+
 void setup() {
   Serial.begin(9600); //begin serial for debugging
   on.attach(9); //attach the "on" servo to pin D9
@@ -20,17 +24,31 @@ void setup() {
   off.write(0);
   delay(5) ;
   on.write(180);
+
+  startMillis = millis();  //initial start time
 }
 
 void loop() {
+  currentMillis = millis();
   int sensor = digitalRead(7); //obtain data from the sensor port
+  /*
+  if(light_switch == 0){ //if the light is on
+    if(currentMillis - startMillis > period){ //if the light is on for "period" milliseconds
+      //move servo
+      on.write(180);
+      delay(5);
+      off.write(30);      
+      startMillis = currentMillis; //set start time to current time
+    }
+  }
+  */
   if(sensor == 1){ // if sound is detected ...
     
     if(light_switch == 0){ // ...and if the light is on...
       
       Serial.println("off"); //print "off" the the serial monitor
-      on.write(180);
       //move servos
+      on.write(180);
       delay(5);
       off.write(30);
       delay(2000);
